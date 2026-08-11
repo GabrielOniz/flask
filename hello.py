@@ -25,9 +25,16 @@ def index():
      return render_template('index.html', current_time=datetime.utcnow())
 
 
-@app.route('/user/<name>')
-def user(name):
-    return render_template('user.html', name=name)
+@app.route('/user/<name>/<prontuario>/<institution>')
+def user(name, prontuario, institution):
+    # Envia todas as variáveis dinâmicas capturadas para o template
+    return render_template(
+        'user.html', 
+        name=name, 
+        prontuario=prontuario, 
+        institution=institution
+    )
+
 
 @app.route('/contextorequisicao')
 def contextorequisicao():
