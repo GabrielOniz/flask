@@ -1,35 +1,29 @@
-from flask import Flask, request, make_response, redirect, abort;
-app = Flask(__name__);
+from datetime import datetime
+from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+
+app = Flask(__name__)
+
+bootstrap = Bootstrap(app)
+moment = Moment(app)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
 
 @app.route('/')
 def index():
-    
-    html_texto = '<h1>Avaliação contínua: Aula 040</h1>';    
-    html_texto += '<ul>';    
-    html_texto += '<li><a href="/">Home</a>';
-    html_texto += '<li><a href="/user/Gabriel Oniz/PT3019781/IFSP">Identificação</a>';
-    html_texto += '<li><a href="/contextorequisicao">Contexto da requisição</a>';
-    html_texto += '</ul>';
-    
-    return html_texto;
+     return render_template('index.html', current_time=datetime.utcnow())
 
-@app.route('/user/<name>/<prontuario>/<institution>')
-def user(name, prontuario, institution):
-    html_texto = '<h1>Avaliação contínua: Aula 040</h1>';    
-    html_texto += '<h2>Aluno: {}</h2>'.format(name);
-    html_texto += '<h2>Prontuário: {}</h2>'.format(prontuario);
-    html_texto += '<h2>Instituição: {}</h2>'.format(institution);
-    html_texto += '<p><a href="/">Voltar</a></p>';
 
-    return html_texto;
-
-@app.route('/contextorequisicao')
-def contextorequisicao():
-    user_agent = request.headers.get('User-Agent');
-    html_texto = '<h1>Avaliação contínua: Aula 040</h1>';    
-    html_texto += '<h2>Seu navegador é: {}</h2>'.format(user_agent);
-    html_texto += '<h2>O IP do cumputador remoto é: {}</h2>'.format(request.remote_addr);
-    html_texto += '<h2>O host da aplicação é: {}</h2>'.format(request.host);
-    html_texto += '<p><a href="/">Voltar</a></p>';
-
-    return html_texto;
+@app.route('/user/<name>')
+def user(name):
+    return render_template('user.html', name=name)
