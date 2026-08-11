@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Olá, {{ name }}!</h1>
+</div>
+
+<div class="content-data">
+    <p>Seu navegador é: {{ user_agent }}</p>
+    <p>O IP do computador remoto é: {{ remote_addr }}</p>
+    <p>O host da aplicação é: {{ host }}</p>
+</div>
+
+<hr>
+
+<div class="time-data text-muted">
+    {% if current_time %}
+        <p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
+        <p>That was {{ moment(current_time).fromNow() }}.</p>
+    {% endif %}
+</div>
+{% endblock %}
